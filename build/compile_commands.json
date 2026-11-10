@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/cpp_projects/VisionLab/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -isystem C:/msys64/ucrt64/include/opencv5 -g -std=gnu++20 -o CMakeFiles\\VisionLab.dir\\src\\main.cpp.obj -c C:\\cpp_projects\\VisionLab\\src\\main.cpp",
+  "file": "C:/cpp_projects/VisionLab/src/main.cpp",
+  "output": "C:/cpp_projects/VisionLab/build/CMakeFiles/VisionLab.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/cpp_projects/VisionLab/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -isystem C:/msys64/ucrt64/include/opencv5 -g -std=gnu++20 -o CMakeFiles\\VisionLab.dir\\src\\Camera.cpp.obj -c C:\\cpp_projects\\VisionLab\\src\\Camera.cpp",
+  "file": "C:/cpp_projects/VisionLab/src/Camera.cpp",
+  "output": "C:/cpp_projects/VisionLab/build/CMakeFiles/VisionLab.dir/src/Camera.cpp.obj"
+},
+{
+  "directory": "C:/cpp_projects/VisionLab/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -isystem C:/msys64/ucrt64/include/opencv5 -g -std=gnu++20 -o CMakeFiles\\VisionLab.dir\\src\\ImageProcessor.cpp.obj -c C:\\cpp_projects\\VisionLab\\src\\ImageProcessor.cpp",
+  "file": "C:/cpp_projects/VisionLab/src/ImageProcessor.cpp",
+  "output": "C:/cpp_projects/VisionLab/build/CMakeFiles/VisionLab.dir/src/ImageProcessor.cpp.obj"
+},
+{
+  "directory": "C:/cpp_projects/VisionLab/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -isystem C:/msys64/ucrt64/include/opencv5 -g -std=gnu++20 -o CMakeFiles\\VisionLab.dir\\src\\ColorDetector.cpp.obj -c C:\\cpp_projects\\VisionLab\\src\\ColorDetector.cpp",
+  "file": "C:/cpp_projects/VisionLab/src/ColorDetector.cpp",
+  "output": "C:/cpp_projects/VisionLab/build/CMakeFiles/VisionLab.dir/src/ColorDetector.cpp.obj"
+},
+{
+  "directory": "C:/cpp_projects/VisionLab/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -isystem C:/msys64/ucrt64/include/opencv5 -g -std=gnu++20 -o CMakeFiles\\VisionLab.dir\\src\\ObjectTracker.cpp.obj -c C:\\cpp_projects\\VisionLab\\src\\ObjectTracker.cpp",
+  "file": "C:/cpp_projects/VisionLab/src/ObjectTracker.cpp",
+  "output": "C:/cpp_projects/VisionLab/build/CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj"
+}
+]

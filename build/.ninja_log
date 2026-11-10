@@ -1,0 +1,21 @@
+# ninja log v7
+32	3838	8160084401672894	CMakeFiles/VisionLab.dir/src/main.cpp.obj	d554609ec00dcc7
+1934	2252	8160086952446306	VisionLab.exe	776b8e02a8fee6e0
+3	41	8154256707622426	clean	7cad43144eea5c8
+33	1190	8155772428592415	CMakeFiles/VisionLab.dir/src/Camera.cpp.obj	564357c090d55c56
+25	878	8155775271414937	CMakeFiles/VisionLab.dir/src/ImageProcessor.cpp.obj	ed4decfd7748765c
+37	4306	8159997175365937	CMakeFiles/VisionLab.dir/src/ColorDetector.cpp.obj	e68358f7c6ef1388
+33	1933	8160086933407398	CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj	39b7826932e33aa5
+92	7835	8160262993782768	CMakeFiles/VisionLab.dir/src/main.cpp.obj	d554609ec00dcc7
+7880	8391	8160263071657280	VisionLab.exe	776b8e02a8fee6e0
+50	2162	8160277583058280	CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj	39b7826932e33aa5
+38	4302	8160277582905211	CMakeFiles/VisionLab.dir/src/main.cpp.obj	d554609ec00dcc7
+4303	4839	8160277625595964	VisionLab.exe	776b8e02a8fee6e0
+60	2722	8160334519404542	CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj	39b7826932e33aa5
+52	4059	8160334519343740	CMakeFiles/VisionLab.dir/src/main.cpp.obj	d554609ec00dcc7
+4059	5272	8160334559423993	VisionLab.exe	776b8e02a8fee6e0
+38	2856	8160335879361269	CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj	39b7826932e33aa5
+2857	3149	8160335907583351	VisionLab.exe	776b8e02a8fee6e0
+49	2708	8160339008154906	CMakeFiles/VisionLab.dir/src/ObjectTracker.cpp.obj	39b7826932e33aa5
+37	3745	8160339008003361	CMakeFiles/VisionLab.dir/src/main.cpp.obj	d554609ec00dcc7
+3745	4062	8160339045112546	VisionLab.exe	776b8e02a8fee6e0
