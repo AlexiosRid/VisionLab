@@ -4,6 +4,20 @@
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
+using namespace std;
+
+enum class ColorPreset
+{
+    RED,
+    GREEN,
+    BLACK,
+    WHITE,
+    BLUE,
+    YELLOW,
+    ORANGE,
+    CUSTOM,
+    PURPLE
+};
 
 class ColorDetector
 {
@@ -12,10 +26,14 @@ public:
 
     void createTrackbars(const std::string& windowName);
 
+    void setPreset(ColorPreset preset);
+
+    void handleKey(int key);
+
     void detect(
-        const cv::Mat& frame,
-        cv::Mat& mask,
-        cv::Mat& result,
+        const Mat& frame,
+        Mat& mask,
+        Mat& result,
         Point& center,
         bool& found
     );
@@ -30,5 +48,9 @@ private:
     int vMin = 50;
     int vMax = 255;
 
-    std::string trackbarWindow;
+    string trackbarWindow;
+
+    ColorPreset currentPreset = ColorPreset::GREEN;
+
+    string getPresetName() const;
 };

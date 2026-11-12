@@ -1,0 +1,32 @@
+﻿# CMake build directories
+build/
+build-*/
+cmake-build-*/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Ninja
+.ninja_deps
+.ninja_log
+
+# Compiled files
+*.exe
+*.dll
+*.obj
+*.o
+*.a
+*.lib
+
+# Visual Studio
+.vs/
+
+# IDE temporary files
+*.user
+*.suo
+
+# VS Code local settings
+.vscode/

@@ -92,7 +92,11 @@ int main()
         imshow("Color Detection", colorResult);
         imshow("Color Mask", mask);
 
-        if (waitKey(1) == 27)
+        int key = waitKey(1);
+
+        colorDetector.handleKey(key);
+
+        if (key == 27)
             break;
     }
 
