@@ -19,6 +19,13 @@ enum class ColorPreset
     PURPLE
 };
 
+struct Detection
+{
+    Point center;
+    Rect boundingBox;
+    double area;
+};
+
 class ColorDetector
 {
 public:
@@ -30,12 +37,11 @@ public:
 
     void handleKey(int key);
 
-    void detect(
+    void detectAll(
         const Mat& frame,
         Mat& mask,
         Mat& result,
-        Point& center,
-        bool& found
+        vector<Detection>& detections
     );
 
 private:

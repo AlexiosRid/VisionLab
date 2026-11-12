@@ -1,15 +1,14 @@
-
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <vector>
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 #include "Camera.h"
-#include "ImageProcessor.h"
 #include "ColorDetector.h"
-#include "ObjectTracker.h"
+#include "MultiObjectTracker.h"
 
 using namespace std;
 using namespace cv;
@@ -17,9 +16,8 @@ using namespace cv;
 int main()
 {
     Camera camera;
-    ImageProcessor processor;
     ColorDetector colorDetector;
-    ObjectTracker tracker;
+    MultiObjectTracker multiTracker;
 
     if (!camera.open(0))
     {
@@ -35,10 +33,10 @@ int main()
     Mat mask;
     Mat colorResult;
 
-    Point objectCenter;
-    bool objectFound = false;
+    vector<Detection> detections;
 
     auto lastTime = chrono::steady_clock::now();
+
     double fps = 0.0;
 
     while (true)
@@ -52,44 +50,58 @@ int main()
         auto currentTime = chrono::steady_clock::now();
 
         double deltaTime =
-            chrono::duration<double>(currentTime - lastTime).count();
+            chrono::duration<double>(
+                currentTime - lastTime
+            ).count();
 
         lastTime = currentTime;
 
-        if (deltaTime > 0)
+        if (deltaTime > 0.0)
             fps = 1.0 / deltaTime;
 
-        colorDetector.detect(
+        colorDetector.detectAll(
             frame,
             mask,
             colorResult,
-            objectCenter,
-            objectFound
+            detections
         );
 
-        tracker.Update(
-            objectCenter,
-            objectFound,
+        multiTracker.Update(
+            detections,
             deltaTime
         );
 
-        tracker.Draw(colorResult);
+        multiTracker.Draw(colorResult);
 
-        string fpsText = "FPS: " +
-            to_string(static_cast<int>(fps));
+        string fpsText =
+            "FPS: " + to_string(static_cast<int>(fps));
 
         putText(
-            frame,
+            colorResult,
             fpsText,
             Point(20, 40),
             FONT_HERSHEY_SIMPLEX,
-            1.0,
-            Scalar(0, 255, 0),
+            0.8,
+            Scalar(255, 255, 255),
+            2
+        );
+
+        string objectCountText =
+            "Active tracks: " +
+            to_string(multiTracker.GetTrackCount());
+
+        putText(
+            colorResult,
+            objectCountText,
+            Point(20, 75),
+            FONT_HERSHEY_SIMPLEX,
+            0.7,
+            Scalar(0, 255, 255),
             2
         );
 
         imshow("Original", frame);
-        imshow("Color Detection", colorResult);
+        imshow("Multi Object Tracking", colorResult);
         imshow("Color Mask", mask);
 
         int key = waitKey(1);
@@ -101,6 +113,7 @@ int main()
     }
 
     camera.release();
+
     destroyAllWindows();
 
     return 0;

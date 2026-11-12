@@ -1,4 +1,5 @@
 #include "ColorDetector.h"
+#include <algorithm>
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
@@ -186,17 +187,9 @@ string ColorDetector::getPresetName() const
     return "UNKNOWN";
 }
 
-
-void ColorDetector::detect(
-    const Mat& frame,
-    Mat& mask,
-    Mat& result,
-    Point& center,
-    bool& found
-)
+void ColorDetector::detectAll(const Mat& frame, Mat& mask, Mat& result, vector<Detection>& detections)
 {
-    found = false;
-    center = Point(-1, -1);
+    detections.clear();
 
     if (frame.empty())
     {
@@ -214,104 +207,60 @@ void ColorDetector::detect(
         Mat mask1;
         Mat mask2;
 
-        inRange(
-            hsv,
-            Scalar(0, sMin, vMin),
-            Scalar(10, sMax, vMax),
-            mask1
-        );
-
-        inRange(
-            hsv,
-            Scalar(170, sMin, vMin),
-            Scalar(179, sMax, vMax),
-            mask2
-        );
+        inRange(hsv, Scalar(0, sMin, vMin), Scalar(10, sMax, vMax), mask1);
+        inRange(hsv, Scalar(170, sMin, vMin), Scalar(179, sMax, vMax), mask2);
 
         bitwise_or(mask1, mask2, mask);
     }
     else
     {
-        Scalar lower(hMin, sMin, vMin);
-        Scalar upper(hMax, sMax, vMax);
-
-        inRange(hsv, lower, upper, mask);
+        inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMax, sMax, vMax), mask);
     }
 
     result = frame.clone();
 
     vector<vector<Point>> contours;
 
-    findContours(
-        mask,
-        contours,
-        RETR_EXTERNAL,
-        CHAIN_APPROX_SIMPLE
-    );
+    findContours(mask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 
-    double maxArea = 500.0;
-    int largestContourIndex = -1;
+    const double minArea = 500.0;
 
-    for (int i = 0; i < static_cast<int>(contours.size()); i++)
+    for (const auto& contour : contours)
     {
-        double area = cv::contourArea(contours[i]);
+        double area = contourArea(contour);
 
-        if (area > maxArea)
+        if (area < minArea)
         {
-            maxArea = area;
-            largestContourIndex = i;
+            continue;
         }
-    }
+        Rect boundingBox = boundingRect(contour);
 
-    if (largestContourIndex != -1)
-    {
-        cv::Rect boundingBox =
-            cv::boundingRect(contours[largestContourIndex]);
+        Point center(boundingBox.x / 2 + boundingBox.width / 2,
+                     boundingBox.y / 2 + boundingBox.height / 2);
 
-        center = Point(
-            boundingBox.x + boundingBox.width / 2,
-            boundingBox.y + boundingBox.height / 2
-        );
-
-        found = true;
-
-        rectangle(
-            result,
-            boundingBox,
-            Scalar(0, 255, 0),
-            2
-        );
-
-        circle(
-            result,
+        Detection detection
+        {
             center,
-            5,
-            Scalar(0, 0, 255),
-            FILLED
-        );
+            boundingBox,
+            area
+        };
+
+        detections.push_back(detection);
+
+        rectangle(result, boundingBox, Scalar(0, 255, 0), 2);
+
+        circle(result, center, 5, Scalar(0, 0, 255), 2);
     }
 
-    string label;
+    string label = "Color" + getPresetName() + " | Objects: " + to_string(detections.size());
 
-    if (found)
-    {
-        label = "Color: " + getPresetName() + " | Object found";
-    }
-    else
-    {
-        label = "Color: " + getPresetName() + " | Object not found";
-    }
-
-    int fontFace = FONT_HERSHEY_SIMPLEX;
-    double fontScale = 0.6;
-    int thickness = 2;
     int baseline = 0;
 
     Size textSize = getTextSize(
         label,
-        fontFace,
-        fontScale,
-        thickness,
+        FONT_HERSHEY_SIMPLEX,
+        0.6,
+        2,
         &baseline
     );
 
@@ -322,16 +271,8 @@ void ColorDetector::detect(
         result.rows - margin - baseline
     );
 
-    rectangle(
-        result,
-        Point(
-            margin - 5,
-            result.rows - textSize.height - margin - 5
-        ),
-        Point(
-            margin + textSize.width + 5,
-            result.rows - margin + baseline
-        ),
+    rectangle(result, Point(margin - 5, result.rows - textSize.height - margin - 5),
+        Point(margin + textSize.width + 5, result.rows - margin + baseline),
         Scalar(0, 0, 0),
         FILLED
     );
@@ -340,9 +281,10 @@ void ColorDetector::detect(
         result,
         label,
         textPosition,
-        fontFace,
-        fontScale,
-        found ? Scalar(0, 255, 0) : Scalar(0, 0, 255),
-        thickness
+        FONT_HERSHEY_SIMPLEX,
+        0.6,
+        detections.empty() ? Scalar(0, 0, 255) : Scalar(0, 255, 0),
+        2
     );
+
 }

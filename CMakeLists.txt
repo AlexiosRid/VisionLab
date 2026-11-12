@@ -16,6 +16,8 @@ add_executable(VisionLab
     src/ImageProcessor.cpp
     src/ColorDetector.cpp
     src/ObjectTracker.cpp
+    src/Track.cpp
+    src/MultiObjectTracker.cpp
 )
 
 target_include_directories(VisionLab PRIVATE

@@ -22,14 +22,9 @@ void ObjectTracker::InitializeKalman(const Point& center)
     kalman.measurementMatrix.at<float>(1, 1) = 1.0f;
 
     kalman.measurementNoiseCov =
-        Mat::eye(2, 2, CV_32F) * 5.0f;
+        Mat::eye(2, 2, CV_32F) * 3.0f;
 
     kalman.processNoiseCov = Mat::zeros(4, 4, CV_32F);
-
-    kalman.processNoiseCov.at<float>(0, 0) = 0.01f;
-    kalman.processNoiseCov.at<float>(1, 1) = 0.01f;
-    kalman.processNoiseCov.at<float>(2, 2) = 5.0f;
-    kalman.processNoiseCov.at<float>(3, 3) = 5.0f;
 
     kalman.errorCovPost = Mat::eye(4, 4, CV_32F) * 10.0f;
 
@@ -130,6 +125,26 @@ void ObjectTracker::Update(
 
     kalman.transitionMatrix.at<float>(1, 3) =
         static_cast<float>(deltaTime);
+
+    float dt = static_cast<float>(deltaTime);
+
+    float q = 175.0f;
+
+    float dt2 = dt * dt;
+    float dt3 = dt2 * dt;
+    float dt4 = dt3 * dt;
+
+    kalman.processNoiseCov = Mat::zeros(4, 4, CV_32F);
+
+    kalman.processNoiseCov.at<float>(0, 0) = q * dt4 / 4.0f;
+    kalman.processNoiseCov.at<float>(0, 2) = q * dt3 / 2.0f;
+    kalman.processNoiseCov.at<float>(2, 0) = q * dt3 / 2.0f;
+    kalman.processNoiseCov.at<float>(2, 2) = q * dt2;
+
+    kalman.processNoiseCov.at<float>(1, 1) = q * dt4 / 4.0f;
+    kalman.processNoiseCov.at<float>(1, 3) = q * dt3 / 2.0f;
+    kalman.processNoiseCov.at<float>(3, 1) = q * dt3 / 2.0f;
+    kalman.processNoiseCov.at<float>(3, 3) = q * dt2;
 
     Mat predicted = kalman.predict();
 
